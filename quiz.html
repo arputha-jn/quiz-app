@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz App</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; color: #f8fafc; }
+        .quiz-card { background: #1e293b; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 400px; }
+        h2 { margin-top: 0; margin-bottom: 20px; font-size: 1.4rem; }
+        .option-btn { display: block; width: 100%; padding: 12px; margin-bottom: 10px; background: #334155; color: white; border: none; border-radius: 6px; text-align: left; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
+        .option-btn:hover { background: #475569; }
+        #scoreContainer { text-align: center; font-size: 1.2rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-card" id="quizBox">
+    <h2 id="questionText">Question text goes here</h2>
+    <div id="optionsBox"></div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            question: "What does HTML stand for?",
+            options: ["Hyper Text Markup Language", "High Tech Multi Language", "Hyper Transfer Markdown Language", "None of the above"],
+            answer: 0
+        },
+        {
+            question: "Which language is used for styling web pages?",
+            options: ["HTML", "JQuery", "CSS", "XML"],
+            answer: 2
+        },
+        {
+            question: "Inside which HTML element do we put the JavaScript?",
+            options: ["<script>", "<js>", "<javascript>", "<code>"],
+            answer: 0
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionText = document.getElementById('questionText');
+    const optionsBox = document.getElementById('optionsBox');
+    const quizBox = document.getElementById('quizBox');
+
+    function loadQuiz() {
+        if (currentQuestion < quizData.length) {
+            const q = quizData[currentQuestion];
+            questionText.textContent = `Q${currentQuestion + 1}: ${q.question}`;
+            optionsBox.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.onclick = () => selectOption(index);
+                optionsBox.appendChild(btn);
+            });
+        } else {
+            quizBox.innerHTML = `<h2>Quiz Completed!</h2><div id="scoreContainer">Your Score: ${score} / ${quizData.length}</div>`;
+        }
+    }
+
+    function selectOption(index) {
+        if (index === quizData[currentQuestion].answer) {
+            score++;
+        }
+        currentQuestion++;
+        loadQuiz();
+    }
+
+    loadQuiz();
+</script>
+
+</body>
+</html>
